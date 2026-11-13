@@ -1,32 +1,48 @@
-<!DOCTYPE html>
-
 <?php
 session_start();
 
 
 ?>
 
-<h2>Administrator Dashboard</h2>
+<!DOCTYPE html>
+<html lang="en">
 
-<a href="admin_add_course.php" class="btn btn-success">
-    Add Course
-</a>
+<head>
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
-<br><br>
+<body>
 
-<a href="admin_student_list.php" class="btn btn-info">
-    View Students
-</a>
+    <div class="container mt-5">
 
-<br><br>
 
-<a href="admin_logout.php" class="btn btn-danger">
-    Logout
-</a>
+        <h2>Welcome, Admin.</h2>
 
-<br><br>
+        <hr>
 
-<a href="index.php"
-    class="btn btn-secondary">
-    Return to Home
-</a>
+        <a href="admin_add_course.php" class="btn btn-success">
+            Add Course
+        </a>
+
+
+
+        <a href="admin_student_list.php" class="btn btn-info">
+            View Students
+        </a>
+
+
+
+        <a href="admin_logout.php" class="btn btn-danger">
+            Logout
+        </a>
+
+
+
+        <a href="index.php"
+            class="btn btn-secondary">
+            Return to Home
+        </a>
+
+    </div>
+</body>
