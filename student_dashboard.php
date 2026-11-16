@@ -31,6 +31,11 @@ if (!isset($_SESSION['student_id'])) {
             Enroll Courses
         </a>
 
+        <a href="student_message.php"
+            class="btn btn-primary">
+            Message a Lecturer
+        </a>
+
         <a href="student_logout.php"
             class="btn btn-danger">
             Logout
