@@ -19,7 +19,7 @@
         
         <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
 
-            <img src="college_banner.jpg" alt="College campus" style="width: 100%; max-width: 1000px; height: auto;"> </br>
+             <img src="images/college_banner.jpg" alt="College campus" style="width: 100%; max-width: 1000px; height: auto;"> </br>
             <p> Thank you for choosing our system </p>
             <p> Your information will be well kept and protected </p>
 
