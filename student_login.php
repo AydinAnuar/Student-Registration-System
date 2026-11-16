@@ -42,10 +42,10 @@ if (isset($_POST['login'])) {
 
 <body>
 
-    <!-- Centers the grey box in the middle of the page -->
+    
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
 
-        <!-- Grey box -->
+       
         <div class="p-5 rounded-4 shadow w-100 d-flex flex-column"
             style="max-width: 650px; min-height: 560px; background-color: #e9ecef;">
 
@@ -73,7 +73,7 @@ if (isset($_POST['login'])) {
                     placeholder="Password"
                     required>
 
-                <!-- Buttons at the bottom of the box: Return to Home on the left, Login on the right -->
+                
                 <div class="d-flex justify-content-between mt-auto pt-4">
                     <a href="index.php" class="btn btn-secondary btn-lg px-4">Return to Home</a>
 
