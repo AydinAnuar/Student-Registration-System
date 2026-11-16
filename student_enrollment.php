@@ -32,7 +32,7 @@ if (isset($_POST['finalize'])) {
             $course_id
         ]);
     }
-    $_SESSION['cart'] = []; // Clear cart after saving
+    $_SESSION['cart'] = []; 
     $success = "Successfully enrolled in courses!";
 }
 
