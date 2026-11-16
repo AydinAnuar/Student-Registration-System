@@ -5,19 +5,15 @@ $dbname = "college_db";
 $username = "root";
 $password = "";
 
-try{
+try {
     $pdo = new PDO(
-        "mysql:host=$host;dbname=$dbname",
+        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
         $username,
-        $password
+        $password,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
 
-    $pdo->setAttribute(
-        PDO::ATTR_ERRMODE,
-        PDO::ERRMODE_EXCEPTION
-    );
-
-}catch(PDOException $e){
+} catch (PDOException $e) {
     die("Connection Failed: " . $e->getMessage());
 }
 ?>
