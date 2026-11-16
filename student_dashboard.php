@@ -31,7 +31,7 @@ if (!isset($_SESSION['student_id'])) {
         
         <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
 
-            <img src="images/campus_students.jpg" alt="College campus" style="width: 100%; max-width: 1000px; height: auto;"> </br>
+            <img src="campus_students.jpg" alt="College campus" style="width: 100%; max-width: 1000px; height: auto;"> </br>
            <p>You can enroll courses or message a lecturer</p>
            
         </div>
