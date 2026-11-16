@@ -63,45 +63,63 @@ if (isset($_POST['register'])) {
 
 <head>
     <title>Student Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
 
-    <div class="container mt-5">
+    <!-- Centers the grey box in the middle of the page -->
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
 
-        <h2>Student Registration</h2>
+        <!-- Grey box -->
+        <div class="p-5 rounded-4 shadow w-100 d-flex flex-column"
+            style="max-width: 650px; min-height: 560px; background-color: #e9ecef;">
 
-        <div class="text-success">
-            <?php echo $message; ?>
+            <h2 class="text-center fw-bold mb-4">Student Registration</h2>
+
+            <div class="text-success mb-2">
+                <?php echo $message; ?>
+            </div>
+
+            <form method="POST" class="d-flex flex-column flex-grow-1">
+
+                <label for="fullname" class="form-label fw-semibold">Full Name</label>
+                <input id="fullname"
+                    type="text"
+                    name="fullname"
+                    placeholder="Full Name"
+                    class="form-control form-control-lg mb-4"
+                    required>
+
+                <label for="email" class="form-label fw-semibold">Email</label>
+                <input id="email"
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    class="form-control form-control-lg mb-4"
+                    required>
+
+                <label for="password" class="form-label fw-semibold">Password</label>
+                <input id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    class="form-control form-control-lg mb-2"
+                    required>
+
+                <!-- Button at the bottom right of the box -->
+                <div class="d-flex justify-content-end mt-auto pt-4">
+                    <button name="register"
+                        class="btn btn-success btn-lg px-5">
+                        Register
+                    </button>
+                </div>
+
+            </form>
+
         </div>
 
-        <form method="POST">
-
-            <input type="text"
-                name="fullname"
-                placeholder="Full Name"
-                class="form-control mb-3"
-                required>
-
-            <input type="email"
-                name="email"
-                placeholder="Email"
-                class="form-control mb-3"
-                required>
-
-            <input type="password"
-                name="password"
-                placeholder="Password"
-                class="form-control mb-3"
-                required>
-
-            <button name="register"
-                class="btn btn-success">
-                Register
-            </button>
-
-        </form>
     </div>
 
 </body>
