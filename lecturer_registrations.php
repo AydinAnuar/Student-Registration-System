@@ -6,7 +6,7 @@ $perPage = 20;
 $totalRows = $pdo->query(
     'SELECT COUNT(*) FROM enrollments e
      INNER JOIN students s ON s.id = e.student_id
-     INNER JOIN courses c ON c.id = e.course_id'
+     INNER JOIN courses c ON c.course_id = e.course_id'
 )->fetchColumn();
 $totalPages = max(1, (int) ceil($totalRows / $perPage));
 $requestedPage = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -17,7 +17,7 @@ $stmt = $pdo->prepare(
     'SELECT s.id AS student_id, s.fullname, s.email, c.course_code, c.course_name
      FROM enrollments e
      INNER JOIN students s ON s.id = e.student_id
-     INNER JOIN courses c ON c.id = e.course_id
+     INNER JOIN courses c ON c.course_id = e.course_id
      ORDER BY s.fullname, c.course_code
      LIMIT :limit OFFSET :offset'
 );

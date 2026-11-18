@@ -114,7 +114,9 @@ if (isset($_POST['register'])) {
                         class="btn btn-success btn-lg px-5">
                         Register
                     </button>
+                    
                 </div>
+                <a href="index.php" class="btn btn-secondary">Return to Home</a>
 
             </form>
 

@@ -21,11 +21,17 @@ session_start();
 
         <hr>
 
+        <a href="admin_add_subject.php" class="btn btn-primary">
+            Add Subject
+        </a>
+
         <a href="admin_add_course.php" class="btn btn-success">
             Add Course
         </a>
 
-
+        <a href="admin_add_lecturer.php" class="btn btn-warning">
+            Add Lecturer
+        </a>
 
         <a href="admin_student_list.php" class="btn btn-info">
             View Students

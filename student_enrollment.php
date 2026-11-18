@@ -76,9 +76,9 @@ $courses = $pdo->query(
                 </div>
 
                 <form method="POST" class="mb-0">
-                    <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
+                    <input type="hidden" name="course_id" value="<?= $course['course_id'] ?>">
                     
-                    <?php if (in_array($course['id'], $_SESSION['cart'])): ?>
+                    <?php if (in_array($course['course_id'], $_SESSION['cart'])): ?>
                         <button type="button" class="btn btn-secondary btn-sm" disabled>Added</button>
                     <?php else: ?>
                         <button type="submit" name="add" class="btn btn-primary btn-sm">Add</button>
@@ -91,10 +91,13 @@ $courses = $pdo->query(
         <form method="POST">
             <button class="btn btn-success btn-lg btn-finalize shadow" name="finalize">
                 Enroll (<?= count($_SESSION['cart']) ?>)
+                
             </button>
+            
         </form>
-
+<a href="student_dashboard.php" class="btn btn-secondary">Return to Dashboard</a>
     </div>
+    
 
 </body>
 

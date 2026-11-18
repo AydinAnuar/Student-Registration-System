@@ -18,25 +18,31 @@ VALUES(?,?,?)"
     ]);
 }
 ?>
-
-<form method="POST">
-
-    <h2>Add Course</h2>
-
-    <input type="text"
-        name="course_code"
-        placeholder="Course Code">
-
-    <input type="text"
-        name="course_name"
-        placeholder="Course Name">
-
-    <input type="number"
-        name="credits"
-        placeholder="Credits">
-
-    <button name="save">
-        Save
-    </button>
+<head>
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Add Course</h2>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="course_code" class="form-label">Course Code</label>
+                <input type="text" class="form-control" id="course_code" name="course_code" placeholder="Course Code" required>
+            </div>
+            <div class="mb-3">
+                <label for="course_name" class="form-label">Course Name</label>
+                <input type="text" class="form-control" id="course_name" name="course_name" placeholder="Course Name" required>
+            </div>
+            <div class="mb-3">
+                <label for="credits" class="form-label">Credits</label>
+                <input type="number" class="form-control" id="credits" name="credits" placeholder="Credits" required>
+            </div>
+            <button type="submit" name="save" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</body>
+</html>
+        
 
 </form>
