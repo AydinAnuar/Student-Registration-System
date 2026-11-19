@@ -38,7 +38,7 @@ if (isset($_POST['finalize'])) {
 
 $courses = $pdo->query(
     "SELECT * FROM courses"
-);
+)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -47,57 +47,56 @@ $courses = $pdo->query(
 <head>
     <title>Enroll Courses</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        
-        .btn-finalize {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-        }
-    </style>
+    <link href="student.css" rel="stylesheet">
 </head>
 
 <body>
 
-    <div class="container mt-5 mb-5">
-
-        <h2>Enroll Courses</h2>
+    <main class="student-card">
+        <h1 class="student-title">Enroll Courses</h1>
+        <a href="student_dashboard.php" class="student-dark student-action mb-4">Return to Dashboard</a>
 
         <?php if (isset($success)): ?>
-            <div class="alert alert-success"><?= $success ?></div>
+            <div class="alert alert-success student-alert"><?= htmlspecialchars($success, ENT_QUOTES, 'UTF-8') ?></div>
         <?php endif; ?>
 
-        
-        <?php foreach ($courses as $course) { ?>
-            <div class="d-flex justify-content-between align-items-center border p-3 rounded mb-3 bg-white shadow-sm" style="max-width: 600px;">
-                <div>
-                    <strong><?= $course['course_code'] ?></strong> - <?= $course['course_name'] ?>
+        <div class="row g-3">
+            <?php foreach ($courses as $course) { ?>
+                <div class="col-12 col-md-6">
+                    <div class="card student-course">
+                        <div class="card-body d-flex flex-column">
+                            <h2 class="card-title h5">
+                                <?= htmlspecialchars($course['course_code'], ENT_QUOTES, 'UTF-8') ?>
+                            </h2>
+                            <p class="card-text flex-grow-1">
+                                <?= htmlspecialchars($course['course_name'], ENT_QUOTES, 'UTF-8') ?>
+                            </p>
+                            <form method="POST" class="mb-0">
+                                <input type="hidden" name="course_id"
+                                       value="<?= (int) $course['course_id'] ?>">
+                                <?php if (in_array($course['course_id'], $_SESSION['cart'])): ?>
+                                    <button type="button" class="student-dark student-action" disabled>Added</button>
+                                <?php else: ?>
+                                    <button type="submit" name="add" class="student-primary student-action">Add Course</button>
+                                <?php endif; ?>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+            <?php } ?>
+            <?php if (empty($courses)) { ?>
+                <div class="col-12">
+                    <div class="alert alert-info student-alert mb-0">No courses are available for enrollment.</div>
+                </div>
+            <?php } ?>
+        </div>
 
-                <form method="POST" class="mb-0">
-                    <input type="hidden" name="course_id" value="<?= $course['course_id'] ?>">
-                    
-                    <?php if (in_array($course['course_id'], $_SESSION['cart'])): ?>
-                        <button type="button" class="btn btn-secondary btn-sm" disabled>Added</button>
-                    <?php else: ?>
-                        <button type="submit" name="add" class="btn btn-primary btn-sm">Add</button>
-                    <?php endif; ?>
-                </form>
-            </div>
-        <?php } ?>
-
-        
         <form method="POST">
-            <button class="btn btn-success btn-lg btn-finalize shadow" name="finalize">
+            <button class="student-primary student-action mt-4" name="finalize">
                 Enroll (<?= count($_SESSION['cart']) ?>)
-                
             </button>
-            
         </form>
-<a href="student_dashboard.php" class="btn btn-secondary">Return to Dashboard</a>
-    </div>
-    
+    </main>
 
 </body>
 

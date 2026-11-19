@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include 'config_database.php';
@@ -27,40 +28,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $error = 'Invalid lecturer name or password.';
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecturer Login</title>
+    <title>Lecturer Login - INTI</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lecturer.css?v=2" rel="stylesheet">
 </head>
+
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h2 class="text-center mb-4">Lecturer Login</h2>
-                        <?php if (!empty($error)) { ?>
-                            <div class="alert alert-danger"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div>
-                        <?php } ?>
-                        <form method="POST">
-                            <div class="mb-3">
-                                <label for="lecturer_name" class="form-label">Lecturer Name</label>
-                                <input id="lecturer_name" type="text" name="lecturer_name" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input id="password" type="password" name="password" class="form-control" required>
-                            </div>
-                            <button type="submit" name="login" class="btn btn-primary">Login</button>
-                            <a href="index.php" class="btn btn-secondary">Return to Home</a>
-                        </form>
-                    </div>
-                </div>
+
+    <div class="login-card">
+
+        <h2>Lecturer Login</h2>
+
+        <?php if (!empty($error)) { ?>
+            <div class="alert alert-danger">
+                <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
             </div>
-        </div>
+        <?php } ?>
+
+        <form method="POST">
+
+            <div class="mb-3">
+                <label for="lecturer_name" class="form-label">Lecturer Name</label>
+                <input type="text" id="lecturer_name"
+                       name="lecturer_name"
+                       class="form-control"
+                       placeholder="Enter your lecturer name"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password"
+                       name="password"
+                       class="form-control"
+                       placeholder="Enter your password"
+                       required>
+            </div>
+
+            <button type="submit" name="login" class="btn btn-login full-width">
+                Login
+            </button>
+
+            <a href="index.php" class="btn-home">
+                Return to Home
+            </a>
+
+        </form>
+
     </div>
+
 </body>
 </html>

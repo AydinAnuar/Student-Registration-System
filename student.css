@@ -1,0 +1,168 @@
+body {
+    background: #f8f3ee;
+    color: #292929;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px 15px;
+}
+
+.student-card {
+    width: 100%;
+    max-width: 850px;
+    margin: auto;
+    padding: 40px;
+    background: #fff;
+    border-top: 5px solid #ed0010;
+    border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.student-card-narrow {
+    max-width: 680px;
+}
+
+.student-title {
+    color: #ed0010;
+    font-size: 34px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.student-subtitle {
+    color: #666;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.student-card .form-label {
+    color: #292929;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.student-card .form-control,
+.student-card .form-select {
+    min-height: 52px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.student-card textarea.form-control {
+    min-height: auto;
+}
+
+.student-card .form-control:focus,
+.student-card .form-select:focus {
+    border-color: #ed0010;
+    box-shadow: 0 0 0 0.15rem rgba(237, 0, 16, 0.12);
+}
+
+.student-primary,
+.student-dark,
+.student-action {
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+    border-radius: 8px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.student-primary {
+    background: #ed0010;
+}
+
+.student-primary:hover {
+    background: #c9000d;
+    color: #fff;
+}
+
+.student-dark {
+    background: #262626;
+}
+
+.student-dark:hover {
+    background: #444;
+    color: #fff;
+}
+
+.student-action {
+    width: 100%;
+}
+
+.student-download {
+    width: auto;
+    min-width: 130px;
+}
+
+.student-menu {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.student-menu .student-action {
+    min-height: 56px;
+}
+
+.student-course,
+.student-message {
+    border: 1px solid #f1dada;
+    border-radius: 10px;
+}
+
+.student-course {
+    height: 100%;
+}
+
+.student-course .card-title,
+.student-message .card-title {
+    color: #ed0010;
+}
+
+.student-table {
+    border-color: #f1dada;
+}
+
+.student-table thead th {
+    background: #fff7f5;
+    color: #262626;
+    border-bottom-color: #ed0010;
+}
+
+.student-alert {
+    border-radius: 8px;
+}
+
+.student-image {
+    width: 100%;
+    max-height: 360px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+@media (max-width: 576px) {
+    .student-card {
+        padding: 25px 20px;
+    }
+
+    .student-title {
+        font-size: 28px;
+        margin-bottom: 24px;
+    }
+
+    .student-menu {
+        grid-template-columns: 1fr;
+    }
+}

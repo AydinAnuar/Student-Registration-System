@@ -1,0 +1,229 @@
+body {
+    background: #f8f3ee;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+}
+
+.lecturer-card,
+.login-card,
+.dashboard,
+.list-card {
+    background: white;
+    width: 100%;
+    max-width: 850px;
+    padding: 40px;
+    border-radius: 14px;
+    border-top: 5px solid #ed0010;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.login-card {
+    max-width: 680px;
+}
+
+.lecturer-card h1,
+.login-card h1,
+.login-card h2,
+.dashboard h1,
+.dashboard h2,
+.list-card h1,
+.list-card h2 {
+    color: #ed0010;
+    font-size: 34px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #292929;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    height: 52px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.form-control:focus {
+    border-color: #ed0010;
+    box-shadow: 0 0 0 0.15rem rgba(237, 0, 16, 0.12);
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.menu a {
+    background: #fff7f5;
+    color: #262626;
+    text-decoration: none;
+    text-align: center;
+    padding: 28px 15px;
+    border: 1px solid #f1dada;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.menu a:hover {
+    background: #ed0010;
+    color: white;
+    border-color: #ed0010;
+}
+
+.bottom-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.bottom-buttons a,
+.btn-custom,
+.btn-back {
+    flex: 1;
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-add,
+.btn-login,
+.logout {
+    background: #ed0010;
+}
+
+.btn-add:hover,
+.btn-login:hover,
+.logout:hover {
+    background: #c9000d;
+    color: white;
+}
+
+.btn-back,
+.btn-home,
+.home {
+    background: #262626;
+}
+
+.btn-home {
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.btn-back:hover,
+.btn-home:hover,
+.home:hover {
+    background: #444;
+    color: white;
+}
+
+a.btn-home,
+a.btn-home:link,
+a.btn-home:visited,
+a.btn-home:hover,
+a.btn-home:focus,
+a.btn-home:active {
+    color: #fff;
+}
+
+.table {
+    margin-bottom: 20px;
+    border-color: #f1dada;
+}
+
+.table thead th {
+    background: #fff7f5;
+    color: #262626;
+    border-bottom-color: #ed0010;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #fffaf8;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #fff0ed;
+}
+
+.message-card {
+    border: 1px solid #f1dada;
+    border-radius: 10px;
+}
+
+.message-card .card-title {
+    color: #ed0010;
+}
+
+.alert {
+    border-radius: 8px;
+}
+
+.pagination .page-link {
+    color: #ed0010;
+}
+
+.pagination .active .page-link {
+    background: #ed0010;
+    border-color: #ed0010;
+}
+
+.full-width {
+    width: 100%;
+    margin-top: 8px;
+}
+
+@media (max-width: 576px) {
+    .lecturer-card,
+    .login-card,
+    .dashboard,
+    .list-card {
+        padding: 25px 20px;
+    }
+
+    .lecturer-card h1,
+    .login-card h1,
+    .login-card h2,
+    .dashboard h1,
+    .dashboard h2,
+    .list-card h1,
+    .list-card h2 {
+        font-size: 28px;
+    }
+
+    .menu,
+    .bottom-buttons {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+}

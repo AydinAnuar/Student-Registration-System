@@ -31,14 +31,13 @@ $registrations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Registrations</title>
+    <title>Student Registrations - INTI</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lecturer.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Student Registrations</h2>
-        <hr>
-        <a href="lecturer_dashboard.php" class="btn btn-secondary mb-3">Return to Dashboard</a>
+    <div class="list-card" style="max-width: 1000px;">
+        <h1>Student Registrations</h1>
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover">
                 <thead class="table-light">
@@ -78,6 +77,7 @@ $registrations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </ul>
             </nav>
         <?php } ?>
+        <a href="lecturer_dashboard.php" class="btn-back">Return to Dashboard</a>
     </div>
 </body>
 </html>
