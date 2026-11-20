@@ -4,8 +4,48 @@ session_start();
 
 include 'config_database.php';
 
+$successMessage = '';
+$errorMessage = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_student'])) {
+    $studentId = filter_var($_POST['delete_student'], FILTER_VALIDATE_INT);
+
+    if ($studentId === false || $studentId < 1) {
+        $errorMessage = 'Invalid student ID.';
+    } else {
+        try {
+            $pdo->beginTransaction();
+
+            $deleteEnrollments = $pdo->prepare('DELETE FROM enrollments WHERE student_id = ?');
+            $deleteEnrollments->execute([$studentId]);
+
+            $deleteStudent = $pdo->prepare('DELETE FROM students WHERE id = ?');
+            $deleteStudent->execute([$studentId]);
+
+            if ($deleteStudent->rowCount() === 0) {
+                throw new RuntimeException('Student not found.');
+            }
+
+            $pdo->commit();
+            $successMessage = 'Student deleted successfully.';
+        } catch (Throwable $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            $errorMessage = 'Could not delete the student.';
+        }
+    }
+}
+
 $students = $pdo->query(
-    "SELECT * FROM students"
+    "SELECT s.id, s.fullname, s.email,
+            GROUP_CONCAT(DISTINCT CONCAT(c.course_code, ' - ', c.course_name)
+                         ORDER BY c.course_code SEPARATOR ', ') AS courses
+     FROM students s
+     LEFT JOIN enrollments e ON e.student_id = s.id
+     LEFT JOIN courses c ON c.course_id = e.course_id
+     GROUP BY s.id, s.fullname, s.email
+     ORDER BY s.fullname"
 )->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -84,6 +124,19 @@ $students = $pdo->query(
             color: white;
         }
 
+        .btn-delete {
+            background: #ed0010;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-weight: bold;
+        }
+
+        .btn-delete:hover {
+            background: #c9000d;
+        }
+
         @media (max-width: 576px) {
             .list-card {
                 padding: 25px 20px;
@@ -99,10 +152,17 @@ $students = $pdo->query(
     <div class="list-card">
         <h1>Student Information</h1>
 
+        <?php if ($successMessage !== '') { ?>
+            <div class="alert alert-success" role="alert"><?= htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8') ?></div>
+        <?php } ?>
+        <?php if ($errorMessage !== '') { ?>
+            <div class="alert alert-danger" role="alert"><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?></div>
+        <?php } ?>
+
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover">
                 <thead class="table-light">
-                    <tr><th>ID</th><th>Name</th><th>Email</th></tr>
+                    <tr><th>ID</th><th>Name</th><th>Email</th><th>Course(s)</th><th>Action</th></tr>
                 </thead>
                 <tbody>
                     <?php foreach ($students as $student) { ?>
@@ -110,10 +170,17 @@ $students = $pdo->query(
                             <td><?= htmlspecialchars($student['id'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($student['fullname'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($student['email'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($student['courses'] ?: 'Not applied', ENT_QUOTES, 'UTF-8') ?></td>
+                            <td>
+                                <form method="post" onsubmit="return confirm('Delete this student and remove their course enrollments?');">
+                                    <input type="hidden" name="delete_student" value="<?= (int) $student['id'] ?>">
+                                    <button type="submit" class="btn-delete">Delete</button>
+                                </form>
+                            </td>
                         </tr>
                     <?php } ?>
                     <?php if (empty($students)) { ?>
-                        <tr><td colspan="3" class="text-center text-muted">No students registered.</td></tr>
+                        <tr><td colspan="5" class="text-center text-muted">No students registered.</td></tr>
                     <?php } ?>
                 </tbody>
             </table>

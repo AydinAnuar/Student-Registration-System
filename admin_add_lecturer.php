@@ -13,15 +13,51 @@ $courses = $pdo->query(
 if (empty($_SESSION['lecturer_form_token'])) {
     $_SESSION['lecturer_form_token'] = bin2hex(random_bytes(32));
 }
+$csrfValid = is_string($_POST['csrf_token'] ?? null)
+    && hash_equals($_SESSION['lecturer_form_token'], $_POST['csrf_token']);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_lecturer'])) {
+    if (!$csrfValid) {
+        $errors[] = 'Your form session expired. Please try again.';
+    } else {
+        $deleteLecturerId = filter_var(
+            $_POST['delete_lecturer'],
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 1, 'max_range' => 4294967295]]
+        );
+
+        if ($deleteLecturerId === false) {
+            $errors[] = 'Invalid lecturer ID.';
+        } else {
+            try {
+                $deleteStmt = $pdo->prepare('DELETE FROM lecturers WHERE lecturer_id = ?');
+                $deleteStmt->execute([$deleteLecturerId]);
+
+                if ($deleteStmt->rowCount() > 0) {
+                    $success = 'Lecturer deleted successfully.';
+                    $_SESSION['lecturer_form_token'] = bin2hex(random_bytes(32));
+                } else {
+                    $errors[] = 'Lecturer not found.';
+                }
+            } catch (PDOException $exception) {
+                if (($exception->errorInfo[1] ?? null) === 1451) {
+                    $errors[] = 'This lecturer cannot be deleted while related records still reference them.';
+                } else {
+                    throw $exception;
+                }
+            }
+        }
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_lecturer'])) {
     $lecturer_id = trim($_POST['lecturer_id'] ?? '');
     $lecturer_name = trim($_POST['lecturer_name'] ?? '');
     $lecturer_email = trim($_POST['lecturer_email'] ?? '');
     $password = trim($_POST['password'] ?? '');
     $course_id = trim($_POST['course_id'] ?? '');
 
-    if (!hash_equals($_SESSION['lecturer_form_token'], $_POST['csrf_token'] ?? '')) {
+    if (!$csrfValid) {
         $errors[] = 'Your form session expired. Please try again.';
     }
 
@@ -87,6 +123,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+$lecturerRecords = $pdo->query(
+    'SELECT l.lecturer_id, l.lecturer_name, l.lecturer_email, c.course_name
+     FROM lecturers l
+     LEFT JOIN courses c ON c.course_id = l.course_id
+     ORDER BY l.lecturer_name'
+)->fetchAll(PDO::FETCH_ASSOC);
+
 function e(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
@@ -116,7 +159,7 @@ function e(string $value): string
         .form-card {
             background: white;
             width: 100%;
-            max-width: 680px;
+            max-width: 1000px;
             padding: 40px;
             border-radius: 15px;
             border-top: 5px solid #ed0010;
@@ -129,6 +172,13 @@ function e(string $value): string
             font-weight: bold;
             text-align: center;
             margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #ed0010;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 35px 0 20px;
         }
 
         .form-label {
@@ -183,6 +233,19 @@ function e(string $value): string
         .btn-back:hover {
             background-color: #444;
             color: white;
+        }
+
+        .btn-delete {
+            background: #ed0010;
+            color: #fff;
+            border: 0;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-weight: bold;
+        }
+
+        .btn-delete:hover {
+            background: #c9000d;
         }
 
         .alert {
@@ -268,7 +331,7 @@ function e(string $value): string
             </select>
         <?php endif; ?>
 
-        <button type="submit" class="btn-custom btn-add">
+        <button type="submit" name="add_lecturer" class="btn-custom btn-add">
             Add Lecturer
         </button>
 
@@ -277,6 +340,43 @@ function e(string $value): string
         </a>
 
     </form>
+
+    <h2>Existing Lecturers</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Lecturer ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($lecturerRecords as $lecturer): ?>
+                    <tr>
+                        <td><?= e((string) $lecturer['lecturer_id']) ?></td>
+                        <td><?= e($lecturer['lecturer_name']) ?></td>
+                        <td><?= e((string) ($lecturer['lecturer_email'] ?? '')) ?></td>
+                        <td><?= e((string) ($lecturer['course_name'] ?? 'No course assigned')) ?></td>
+                        <td>
+                            <form method="post" onsubmit="return confirm('Delete this lecturer record?');">
+                                <input type="hidden" name="csrf_token"
+                                       value="<?= e($_SESSION['lecturer_form_token']) ?>">
+                                <input type="hidden" name="delete_lecturer"
+                                       value="<?= e((string) $lecturer['lecturer_id']) ?>">
+                                <button type="submit" class="btn-delete">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                <?php if (empty($lecturerRecords)): ?>
+                    <tr><td colspan="5" class="text-center text-muted">No lecturers available.</td></tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 
 </div>
 

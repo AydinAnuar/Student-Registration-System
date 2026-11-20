@@ -89,6 +89,12 @@ body {
     border-color: #ed0010;
 }
 
+.menu .course-material-button {
+    grid-column: 1 / -1;
+    width: 50%;
+    justify-self: center;
+}
+
 .bottom-buttons {
     display: flex;
     gap: 15px;
@@ -225,5 +231,9 @@ a.btn-home:active {
     .bottom-buttons {
         grid-template-columns: 1fr;
         flex-direction: column;
+    }
+
+    .menu .course-material-button {
+        width: 100%;
     }
 }

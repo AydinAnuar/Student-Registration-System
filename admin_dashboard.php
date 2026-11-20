@@ -144,6 +144,14 @@ session_start();
                 View Students
             </a>
 
+            <a href="admin_subject_list.php">
+                View Subjects
+            </a>
+
+            <a href="admin_lecturer_list.php">
+                View Lecturers
+            </a>
+
         </div>
 
         <div class="bottom-buttons">

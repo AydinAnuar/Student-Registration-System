@@ -3,7 +3,14 @@ require 'lecturer_auth.php';
 include 'config_database.php';
 
 $students = $pdo->query(
-    'SELECT id, fullname, email FROM students ORDER BY fullname'
+    "SELECT s.id, s.fullname, s.email,
+            GROUP_CONCAT(DISTINCT CONCAT(c.course_code, ' - ', c.course_name)
+                         ORDER BY c.course_code SEPARATOR ', ') AS courses
+     FROM students s
+     LEFT JOIN enrollments e ON e.student_id = s.id
+     LEFT JOIN courses c ON c.course_id = e.course_id
+     GROUP BY s.id, s.fullname, s.email
+     ORDER BY s.fullname"
 )->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -21,7 +28,7 @@ $students = $pdo->query(
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover">
                 <thead class="table-light">
-                    <tr><th>ID</th><th>Name</th><th>Email</th></tr>
+                    <tr><th>ID</th><th>Name</th><th>Email</th><th>Course(s)</th></tr>
                 </thead>
                 <tbody>
                     <?php foreach ($students as $student) { ?>
@@ -29,10 +36,11 @@ $students = $pdo->query(
                             <td><?= htmlspecialchars($student['id'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($student['fullname'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td><?= htmlspecialchars($student['email'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($student['courses'] ?: 'Not applied', ENT_QUOTES, 'UTF-8') ?></td>
                         </tr>
                     <?php } ?>
                     <?php if (empty($students)) { ?>
-                        <tr><td colspan="3" class="text-center text-muted">No students registered.</td></tr>
+                        <tr><td colspan="4" class="text-center text-muted">No students registered.</td></tr>
                     <?php } ?>
                 </tbody>
             </table>
