@@ -3,17 +3,55 @@
 session_start();
 include 'config_database.php';
 
-if (isset($_POST['save'])) {
-    $sql = $pdo->prepare(
-        "INSERT INTO courses (course_code, course_name, credits)
-         VALUES (?, ?, ?)"
+$successMessage = '';
+$errorMessage = '';
+$courseCode = '';
+$courseName = '';
+$credits = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
+    $courseCode = trim($_POST['course_code'] ?? '');
+    $courseName = trim($_POST['course_name'] ?? '');
+    $creditsInput = $_POST['credits'] ?? '';
+    $credits = filter_var(
+        $creditsInput,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
     );
 
-    $sql->execute([
-        $_POST['course_code'],
-        $_POST['course_name'],
-        $_POST['credits']
-    ]);
+    if ($courseCode === '') {
+        $errorMessage = 'Course code is required.';
+    } elseif ($courseName === '') {
+        $errorMessage = 'Course name is required.';
+    } elseif ($credits === false) {
+        $errorMessage = 'Credits must be a positive whole number.';
+    } else {
+        $courseCheck = $pdo->prepare('SELECT 1 FROM courses WHERE course_code = ?');
+        $courseCheck->execute([$courseCode]);
+
+        if ($courseCheck->fetchColumn()) {
+            $errorMessage = 'A course with that course code already exists.';
+        } else {
+            $sql = $pdo->prepare(
+                'INSERT INTO courses (course_code, course_name, credits)
+                 VALUES (?, ?, ?)'
+            );
+
+            try {
+                $sql->execute([$courseCode, $courseName, $credits]);
+                $successMessage = 'Course added successfully.';
+                $courseCode = '';
+                $courseName = '';
+                $credits = '';
+            } catch (PDOException $exception) {
+                if (($exception->errorInfo[1] ?? null) === 1062) {
+                    $errorMessage = 'A course with that course code already exists.';
+                } else {
+                    throw $exception;
+                }
+            }
+        }
+    }
 }
 ?>
 
@@ -102,19 +140,33 @@ if (isset($_POST['save'])) {
 
         <h2>Add Course</h2>
 
+        <?php if ($successMessage !== '') { ?>
+            <div class="alert alert-success" role="status">
+                <?= htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8') ?>
+            </div>
+        <?php } ?>
+        <?php if ($errorMessage !== '') { ?>
+            <div class="alert alert-danger" role="alert">
+                <?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?>
+            </div>
+        <?php } ?>
+
         <form method="POST">
 
             <label for="course_code" class="form-label">Course Code</label>
             <input type="text" id="course_code" name="course_code"
-                   class="form-control" placeholder="Enter course code" required>
+                   class="form-control" placeholder="Enter course code" required
+                   value="<?= htmlspecialchars($courseCode, ENT_QUOTES, 'UTF-8') ?>">
 
             <label for="course_name" class="form-label">Course Name</label>
             <input type="text" id="course_name" name="course_name"
-                   class="form-control" placeholder="Enter course name" required>
+                   class="form-control" placeholder="Enter course name" required
+                   value="<?= htmlspecialchars($courseName, ENT_QUOTES, 'UTF-8') ?>">
 
             <label for="credits" class="form-label">Credits</label>
-            <input type="number" id="credits" name="credits"
-                   class="form-control" placeholder="Enter credits" required>
+            <input type="number" id="credits" name="credits" min="1" step="1"
+                   class="form-control" placeholder="Enter credits" required
+                   value="<?= htmlspecialchars((string) $credits, ENT_QUOTES, 'UTF-8') ?>">
 
             <button type="submit" name="save" class="btn-save">
                 Save Course
